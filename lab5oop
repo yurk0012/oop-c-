@@ -1,0 +1,54 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+class Valyuta {
+protected:
+    double amount; 
+public:
+    Valyuta(double a = 0.0) : amount(a) {}
+    virtual ~Valyuta() {}
+
+    virtual double toEUR() const = 0;
+    virtual double toUSD() const = 0;
+    virtual void print() const = 0;
+};
+
+
+class Hryvnia : public Valyuta {
+private:
+    static constexpr double UAH_TO_EUR = 0.025;
+    static constexpr double UAH_TO_USD = 0.027;
+
+public:
+    Hryvnia(double a = 0.0) : Valyuta(a) {}
+
+    double toEUR() const override { return amount * UAH_TO_EUR; }
+    double toUSD() const override { return amount * UAH_TO_USD; }
+
+    void print() const override {
+        cout << fixed << setprecision(2);
+        cout << "Сума: " << amount << " UAH -> "
+            << toEUR() << " EUR, " << toUSD() << " USD" << endl;
+    }
+};
+
+int main() {
+ 
+    setlocale(LC_ALL, "ukrainian");
+
+    Valyuta* v1 = new Hryvnia(1000.0); 
+    Valyuta* v2 = new Hryvnia(259.75);
+
+    cout << "Результати для першого комплекту:\n";
+    v1->print(); 
+
+    cout << "\nРезультати для другого комплекту:\n";
+    v2->print(); 
+
+    delete v1;
+    delete v2;
+
+    return 0;
+}
