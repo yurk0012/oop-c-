@@ -1,0 +1,64 @@
+#include <iostream>
+#include <type_traits>  
+using namespace std;
+
+template <typename T>
+T multiplyByTwo(T value) {
+    static_assert(std::is_same<T, int>::value || std::is_same<T, double>::value,
+        "multiplyByTwo дозволено лише для int або double!");
+    return value * 2;
+}
+
+
+template <typename T>
+class Sorter {
+private:
+    T* arr;
+    int size;
+
+public:
+    Sorter(T* a, int s) : arr(a), size(s) {}
+
+    void sort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    T temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    void print() {
+        for (int i = 0; i < size; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+int main() {
+    setlocale(LC_ALL, "ukrainian");
+
+    cout << "=== Перевірка шаблонної функції multiplyByTwo ===" << endl;
+    cout << multiplyByTwo(5) << endl;       
+    cout << multiplyByTwo(3.14) << endl;   
+    
+
+    cout << "\n=== Сортування масиву типу int ===" << endl;
+    int a1[] = { 5, 1, 9, -3, 7 };
+    Sorter<int> s1(a1, 5);
+    s1.sort();
+    s1.print();
+
+    cout << "\n=== Сортування масиву типу double ===" << endl;
+    double a2[] = { 2.5, -1.1, 9.0, 3.14 };
+    Sorter<double> s2(a2, 4);
+    s2.sort();
+    s2.print();
+
+    return 0;
+}
