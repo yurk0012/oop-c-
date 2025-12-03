@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "ukrainian");
+    int n;
+    cout << "n = ";
+    cin >> n;
+
+    vector<int> v(n);
+    cout << "Введіть елементи масиву:\n";
+    for (int& x : v) cin >> x;
+
+    int sum_neg = accumulate(v.begin(), v.end(), 0,
+        [](int s, int x) { return x < 0 ? s + x : s; });
+
+    auto mn = min_element(v.begin(), v.end());
+    auto mx = max_element(v.begin(), v.end());
+
+    auto left = min(mn, mx);
+    auto right = max(mn, mx);
+
+    int product = 1;
+    if (right - left > 1)
+        product = accumulate(left + 1, right, 1, multiplies<int>());
+    else
+        product = 0; 
+
+    sort(v.begin(), v.end());
+
+    cout << "Сума від’ємних: " << sum_neg << endl;
+    cout << "Добуток між мінімальним і максимальним: " << product << endl;
+
+    cout << "Відсортований масив: ";
+    for (int x : v) cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
