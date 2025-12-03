@@ -1,0 +1,34 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <io.h>
+#include <fcntl.h>
+
+using namespace std;
+
+int main() {
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    _setmode(_fileno(stdin), _O_U16TEXT);
+
+    map<wstring, wstring> students;
+
+    students[L"Кравчук"] = L"Юрій";
+    students[L"Іванов"] = L"Петро";
+    students[L"Сидоренко"] = L"Андрій";
+    students[L"Бондар"] = L"Олексій";
+
+    wstring surname;
+    wcout << L"Введіть прізвище студента: ";
+    wcin >> surname;
+
+    auto it = students.find(surname);
+
+    if (it != students.end()) {
+        wcout << L"Ім’я студента: " << it->second << endl;
+    }
+    else {
+        wcout << L"Студента з таким прізвищем не знайдено." << endl;
+    }
+
+    return 0;
+}
